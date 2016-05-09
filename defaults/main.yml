@@ -1,0 +1,7 @@
+---
+# defaults file for ansible-role-efs
+vpc_id: ""
+efs_location: "" # Optional: Specify the IP range to whitelist for access to the EFS mount points. Must be a valid CIDR.
+region: us-west-2
+efs_subnet: {}
+cfn_template_url: "https://s3.amazonaws.com/{{ cfn_template_bucket }}/{{ environ }}/{{efs_tpl}}"

@@ -1,0 +1,36 @@
+---
+# tasks file for ansible-role-efs
+- name: set efs template location
+  set_fact:
+    efs_tpl: "build/{{environ}}-efs.json"
+
+- name: efs template
+  template: src=efs.json.j2 dest={{efs_tpl}}
+
+- name: verify JSON
+  command: python -mjson.tool {{efs_tpl}}
+  changed_when: false
+
+- name: Upload template to s3
+  s3:
+    bucket: "{{ cfn_template_bucket }}"
+    src: "{{ efs_tpl }}"
+    object: "{{ environ }}/{{ efs_tpl }}"
+    mode: put
+    security_token: "{{ lookup('env','AWS_SESSION_TOKEN') }}"
+
+- name: Create EFS stack
+  cloudformation:
+    template_url: "{{ cfn_template_url }}"
+    region: "{{ region }}"
+    stack_name: "{{ environ }}-mgage-efs"
+    security_token: "{{ lookup('env','AWS_SESSION_TOKEN') }}"
+    tags:
+      "mGage:env": "{{ environ }}"
+      "mGage:unit": "techops"
+      "mGage:product": "EFS"
+      "mGage:subproduct": "EFS Stack"
+      "mGage:owner": "sysadmins@mGage.com"
+  register: efs_stack
+
+- debug: var=efs_stack.stack_outputs
