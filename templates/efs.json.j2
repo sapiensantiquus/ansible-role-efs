@@ -6,14 +6,14 @@
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Security group for mount target",
-        "VpcId": "{{ vpc_id }}"",
+        "VpcId": "{{ vpc_id }}",
         "Tags": [
           { "Key": "mGage:env",  "Value": "{{ environ }}" },
           { "Key": "mGage:unit",  "Value": "techops"  },
           { "Key": "mGage:product",  "Value": "EFS"  },
           { "Key": "mGage:subproduct",  "Value": "Mount Target Security Group"  },
           { "Key": "Name", "Value": "{{ environ }}-efs-MountTargetSecurityGroup" }
-        ]
+        ],
         "SecurityGroupIngress": [
           {
             "IpProtocol": "tcp",
@@ -42,10 +42,21 @@
       "Properties": {
         "FileSystemId": { "Ref": "FileSystem" },
         "SubnetId": "{{ subnet }}",
-        {% if not loop.last %},{% endif -%}
         "SecurityGroups": [ { "Ref": "MountTargetSecurityGroup" } ]
       }
-    },
+    }
+      {% if not loop.last %},{% endif -%}
     {% endfor -%}
+  },
+  "Outputs": {
+    "FilesystemName": {
+      "Description": "Elastic Filesystem Name",
+      "Value": {
+        "Fn::GetAtt": [
+          "FileSystem",
+          "DNSName"
+        ]
+      }
+    }
   }
 }

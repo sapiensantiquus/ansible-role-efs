@@ -3,5 +3,5 @@
 vpc_id: ""
 efs_location: "" # Optional: Specify the IP range to whitelist for access to the EFS mount points. Must be a valid CIDR.
 region: us-west-2
-efs_subnet: {}
+efs_subnet: {} # If the VPC has multiple subnets in an Availability Zone, you can create a mount target in only one of those subnets. All EC2 instances in the Availability Zone can share the single mount target
 cfn_template_url: "https://s3.amazonaws.com/{{ cfn_template_bucket }}/{{ environ }}/{{efs_tpl}}"
