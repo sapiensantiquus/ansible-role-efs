@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  vars:
+   efs_location: 0.0.0.0/0
+   efs_subnet: ['subnet-2e293659','subnet-3c8f7558','subnet-26371d7f']
+   vpc_id: vpc-fa3aca9e
+  roles:
+    - ./
