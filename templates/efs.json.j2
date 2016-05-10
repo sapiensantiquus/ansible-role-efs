@@ -37,25 +37,22 @@
       }
     },
     {% for subnet in efs_subnet -%}
-    "MountTarget": {
-      "Type": "AWS::EFS::MountTarget",
-      "Properties": {
-        "FileSystemId": { "Ref": "FileSystem" },
-        "SubnetId": "{{ subnet }}",
-        "SecurityGroups": [ { "Ref": "MountTargetSecurityGroup" } ]
+      "MountTarget{{ loop.index }}": {
+        "Type": "AWS::EFS::MountTarget",
+        "Properties": {
+          "FileSystemId": { "Ref": "FileSystem" },
+          "SubnetId": "{{ subnet }}",
+          "SecurityGroups": [ { "Ref": "MountTargetSecurityGroup" } ]
+        }
       }
-    }
       {% if not loop.last %},{% endif -%}
     {% endfor -%}
   },
   "Outputs": {
-    "FilesystemName": {
-      "Description": "Elastic Filesystem Name",
+    "FilesystemID": {
+      "Description": "Elastic Filesystem ID",
       "Value": {
-        "Fn::GetAtt": [
-          "FileSystem",
-          "DNSName"
-        ]
+        "Ref": "FileSystem"
       }
     }
   }
