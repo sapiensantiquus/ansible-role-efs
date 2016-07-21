@@ -17,6 +17,7 @@
     src: "{{ efs_tpl }}"
     object: "{{ environ }}/{{ efs_tpl }}"
     mode: put
+    region: "{{ region }}"
     security_token: "{{ lookup('env','AWS_SESSION_TOKEN') }}"
 
 - name: Create EFS stack
