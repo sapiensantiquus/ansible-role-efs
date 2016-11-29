@@ -2,7 +2,7 @@
 # tasks file for ansible-role-efs
 - name: set efs template location
   set_fact:
-    efs_tpl: "build/{{environ}}-efs.json"
+    efs_tpl: "build/{{ efs_stack_name }}.json"
 
 - name: efs template
   template: src=efs.json.j2 dest={{efs_tpl}}
@@ -24,7 +24,7 @@
   cloudformation:
     template_url: "{{ cfn_template_url }}"
     region: "{{ region }}"
-    stack_name: "{{ environ }}-mgage-efs"
+    stack_name: "{{ efs_stack_name }}"
     security_token: "{{ lookup('env','AWS_SESSION_TOKEN') }}"
     tags:
       "mGage:env": "{{ environ }}"
