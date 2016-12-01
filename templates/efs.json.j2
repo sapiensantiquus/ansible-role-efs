@@ -27,6 +27,7 @@
     "FileSystem": {
       "Type": "AWS::EFS::FileSystem",
       "Properties": {
+        "PerformanceMode": "{{ efs_performance_mode }}",
         "FileSystemTags": [
           { "Key": "mGage:env",  "Value": "{{ environ }}" },
           { "Key": "mGage:unit",  "Value": "techops"  },
